@@ -61,8 +61,15 @@ async def seek_backwards(conf: Conf):
 
 async def readfile(conf: Conf, start):
     async with aio_open(conf.filename, mode='r', encoding=conf.encoding) as f:
+        lines_count = conf.lines_count
+
         await f.seek(start)
         async for line in f:
+            if not lines_count:
+                break
+
+            lines_count -= 1
+
             print(line.strip())
 
 
